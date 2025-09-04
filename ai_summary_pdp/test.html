@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ping-Pong Gradient Border</title>
+    <style>
+        body {
+            background: #0d0d0d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: sans-serif;
+        }
+
+        .moving-border {
+            position: relative;
+            padding: 2rem 3rem;
+            background: #111;
+            border-radius: 16px;
+            color: white;
+            font-size: 1.2rem;
+            z-index: 0;
+        }
+
+        .moving-border::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            padding: 3px;
+            /* border thickness */
+            border-radius: inherit;
+            background: linear-gradient(270deg, #ff00cc, #3333ff, #ffcc00, #ff00cc);
+            background-size: 400% 400%;
+            animation: gradientMove 8s linear infinite alternate;
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: 400% 50%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="moving-border">
+        🔄 Ping-Pong Gradient Border Animation
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Summary PDP</title>
+    <link rel="icon" type="image/x-icon" href="https://tinyurl.com/yt7f6mkc">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <main>
+        <section id="ai-summary-section">
+            <div class="ai-summary-header">
+                <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3.56494" y="1.23572" width="5.56733" height="3.99609" rx="1.5"
+                        transform="rotate(45 3.56494 1.23572)" fill="#019BF0" />
+                    <path
+                        d="M5.45801 3.82214L11.9538 10.3179C12.3443 10.7084 12.3443 11.3416 11.9538 11.7321L11.2467 12.4392C10.8561 12.8297 10.223 12.8297 9.83244 12.4392L3.33669 5.94346L5.45801 3.82214Z"
+                        fill="#D2EDFF" stroke="#185BAA" stroke-linejoin="round" />
+                    <path
+                        d="M3.52845 9.54377C3.46031 9.36708 3.21323 9.36708 3.14508 9.54377L2.82083 10.3845C2.79992 10.4387 2.75754 10.4816 2.70396 10.5027L1.87314 10.8309C1.69854 10.8998 1.69854 11.1498 1.87314 11.2188L2.70396 11.5469C2.75754 11.5681 2.79992 11.6109 2.82083 11.6652L3.14508 12.5059C3.21323 12.6826 3.46031 12.6826 3.52845 12.5059L3.8527 11.6652C3.87361 11.6109 3.916 11.5681 3.96958 11.5469L4.80039 11.2188C4.975 11.1498 4.975 10.8998 4.80039 10.8309L3.96958 10.5027C3.916 10.4816 3.87361 10.4387 3.8527 10.3845L3.52845 9.54377Z"
+                        fill="#019BF0" />
+                    <path
+                        d="M9.7848 1.13288C9.71665 0.956195 9.46958 0.956195 9.40143 1.13288L9.07718 1.97359C9.05627 2.0278 9.01389 2.07069 8.96031 2.09185L8.12949 2.41996C7.95488 2.48892 7.95488 2.73894 8.12949 2.8079L8.96031 3.13601C9.01389 3.15717 9.05627 3.20005 9.07718 3.25427L9.40143 4.09498C9.46958 4.27166 9.71665 4.27166 9.7848 4.09498L10.1091 3.25427C10.13 3.20005 10.1723 3.15717 10.2259 3.13601L11.0567 2.80789C11.2313 2.73894 11.2313 2.48892 11.0567 2.41996L10.2259 2.09185C10.1723 2.07069 10.13 2.0278 10.1091 1.97359L9.7848 1.13288Z"
+                        fill="#019BF0" />
+                    <path
+                        d="M12.204 3.92215C12.1526 3.78881 11.9661 3.78881 11.9147 3.92215L11.67 4.5566C11.6542 4.59751 11.6222 4.62988 11.5818 4.64585L10.9548 4.89346C10.823 4.9455 10.823 5.13418 10.9548 5.18622L11.5818 5.43383C11.6222 5.4498 11.6542 5.48216 11.67 5.52308L11.9147 6.15753C11.9661 6.29087 12.1526 6.29087 12.204 6.15753L12.4487 5.52308C12.4645 5.48216 12.4964 5.4498 12.5369 5.43383L13.1639 5.18622C13.2956 5.13418 13.2956 4.9455 13.1639 4.89346L12.5369 4.64585C12.4964 4.62988 12.4645 4.59751 12.4487 4.5566L12.204 3.92215Z"
+                        fill="#019BF0" />
+                </svg>
+                <h2 class="ai-summary-header-name">Product Summary by AI</h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
+                    <path
+                        d="M4.91222 0.364412C4.72482 -0.121471 4.04536 -0.12147 3.85796 0.364412L2.96627 2.67636C2.90876 2.82546 2.79221 2.94339 2.64487 3.00158L0.360121 3.90389C-0.120043 4.09352 -0.12004 4.78107 0.360128 4.9707L2.64487 5.87301C2.79221 5.9312 2.90876 6.04914 2.96627 6.19824L3.85796 8.51019C4.04536 8.99607 4.72482 8.99607 4.91222 8.51019L5.80392 6.19824C5.86142 6.04914 5.97797 5.9312 6.12532 5.87301L8.41007 4.9707C8.89023 4.78107 8.89023 4.09352 8.41007 3.90389L6.12532 3.00158C5.97797 2.94339 5.86142 2.82546 5.80392 2.67636L4.91222 0.364412Z"
+                        fill="#D2EDFF" />
+                    <path
+                        d="M11.565 8.03477C11.4236 7.6681 10.9108 7.6681 10.7694 8.03477L10.0964 9.77951C10.053 9.89203 9.96509 9.98103 9.85389 10.0249L8.12968 10.7059C7.76732 10.849 7.76732 11.3679 8.12968 11.511L9.85389 12.1919C9.96509 12.2358 10.053 12.3248 10.0964 12.4373L10.7694 14.1821C10.9108 14.5488 11.4236 14.5488 11.565 14.1821L12.2379 12.4373C12.2813 12.3248 12.3693 12.2358 12.4805 12.1919L14.2047 11.511C14.567 11.3679 14.567 10.849 14.2047 10.7059L12.4805 10.0249C12.3693 9.98103 12.2813 9.89203 12.2379 9.77951L11.565 8.03477Z"
+                        fill="#019BF0" />
+                </svg>
+            </div>
+
+            <div class="ai-keywords-chips">
+                <!-- <div class="chip-item">Benz</div>
+                <div class="chip-item">Pogi</div>
+                <div class="chip-item">Yey</div> -->
+            </div>
+
+            <p class="ai-summary-description">
+                <!-- Experience the perfect blend of style and functionality with our state-of-the-art microwave oven. Its
+                modern design complements any kitchen decor while its cutting-edge cooking technology ensures your meals
+                are heated quickly and evenly. -->
+            </p>
+        </section>
+    </main>
+</body>
+
+</html>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const targetSKU = "182282"; // Change this to the SKU you want to display
+
+        fetch("https://ab-benzz.github.io/ui-ux-json/data/ai_pdp_summary.json")
+            .then(response => response.json())
+            .then(data => {
+                const product = data.find(item => String(item.SKU) === String(targetSKU));
+
+                if (product) {
+                    // Populate chips
+                    const chipsContainer = document.querySelector(".ai-keywords-chips");
+                    chipsContainer.innerHTML = ""; // Clear existing
+                    product.Chips.forEach(chip => {
+                        const chipDiv = document.createElement("div");
+                        chipDiv.classList.add("chip-item");
+                        chipDiv.textContent = chip;
+                        chipsContainer.appendChild(chipDiv);
+                    });
+
+                    // Populate description
+                    const desc = document.querySelector(".ai-summary-description");
+                    desc.textContent = product.Description;
+                } else {
+                    console.error("SKU not found in JSON:", targetSKU);
+                }
+            })
+            .catch(error => console.error("Error fetching JSON:", error));
+    });
+</script>
+
+
+
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+        align-items: center;
+        font-family: "Poppins", serif;
+        color: #4c525c;
+    }
+
+    body,
+    main {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    main {
+        width: 100%;
+        display: flex;
+        /* align-items: center; */
+        max-width: 1400px;
+
+    }
+
+    h1 {
+        color: #006de2;
+        font-weight: 600;
+        font-size: clamp(1.2rem, 2.8vw, 1.5rem);
+        line-height: clamp(1.8rem, 4vw, 2.2rem);
+    }
+
+
+
+    #hero {
+        width: 100%;
+        position: relative;
+        background-color: #ecf5ff;
+        padding: clamp(3rem, 5vw, 5rem) clamp(1rem, 5vw, 5rem);
+        max-width: 1400px;
+        border-bottom-left-radius: 1.25rem;
+        border-bottom-right-radius: 1.25rem;
+    }
+
+
+    a {
+        text-decoration: none;
+    }
+
+
+    @media only screen and (width > 768px) {}
+
+    @media only screen and (width > 968px) {}
+
+    @media screen and (width > 1400px) {
+        body {
+            background-color: unset;
+        }
+
+        #hero {
+            margin-top: 2rem;
+            border-radius: 1.25rem;
+        }
+    }
+</style>
+
+<!-- To check SKU -->
+<!-- const skuElement = document.querySelector('.productFullDetail-sku-23W span:nth-of-type(3)');
+    const sku = skuElement ? skuElement.textContent.trim() : null;
+
+console.log(sku); -->
