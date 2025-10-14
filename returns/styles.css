@@ -1,85 +1,30 @@
 :root {
 }
 
-#voucher-payments-pdp {
+#returns-and-warranty-pdp {
   display: flex;
 }
 
-.voucher-pdp_container {
+#returns-and-warranty-pdp button {
   display: flex;
-  max-width: 850px;
-  overflow: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.voucher-pdp-container::-webkit-scrollbar-button {
-  display: none;
-}
-
-.voucher-pdp_item {
-  display: flex;
-  border: 1px dashed #c1da70;
   gap: 8px;
-  padding: 8px 8px 8px 12px;
-  flex: 1;
-  min-width: 235px;
-}
-
-.voucher-pdp_item .voucher-pdp_info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: start;
-}
-
-.voucher-pdp_item > button {
-  border: unset;
   background-color: unset;
+  border: unset;
   cursor: pointer;
-}
-
-.voucher-pdp_item > button:first-of-type {
-  display: flex;
-  gap: 8px;
-}
-
-.voucher-pdp_item .voucher-info-title {
-  font-weight: 500;
-  line-height: 20px;
-  color: #383d45;
-  font-size: 14px;
-  line-height: 142.857%;
-}
-.voucher-pdp_item .voucher-pdp_info > small {
-  font-size: 12px;
-  font-weight: 450;
-  line-height: 114%;
-  color: var(--SecondaryGray-SecondaryGray100, #4d4b4b);
+  color: var(--Secondary-Gray, #646464);
+  white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
-
-  /* font-family: "TT Firs Text Trial"; */
+  width: 100%;
 }
 
-.voucher-pdp-item > button:last-of-type {
-  border-radius: 4px;
+#returns-and-warranty-pdp .returns-dot {
+  color: #dadce0;
 }
 
-.voucher-pdp_item > button:last-of-type .voucher-pdp_copybtn {
-  background: #ebf7c9;
-  border-radius: 4px;
-  width: 50px;
-  display: block;
-  padding: 2px 0;
-  color: #617f00;
-  text-overflow: ellipsis;
-  font-family: "TT Firs Text Trial";
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 450;
-  line-height: 114%;
+#returns-and-warranty-pdp button:hover {
+  text-decoration: underline;
 }
-
 /*  */
 /*  */
 /*  */
@@ -109,6 +54,9 @@ div:has(.voucher-pdp-modal-container) {
   position: absolute;
 }
 .modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   background: white;
   padding: 20px;
   border-radius: 20px;
@@ -122,6 +70,29 @@ div:has(.voucher-pdp-modal-container) {
 
 .modal-content::-webkit-scrollbar {
   display: none;
+}
+
+.returns-modal-item {
+  display: flex;
+  gap: 10px;
+}
+
+.returns-modal-item svg {
+  flex-shrink: 0;
+}
+
+.returns-modal-heading {
+  color: var(--Primary-Black, #282727);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 142.857%;
+}
+
+.returns-modal-desc {
+  color: var(--Secondary-Gray, #646464);
+  font-weight: 400;
+  line-height: 20px;
+  font-size: 14px;
 }
 
 .close-btn {
@@ -251,6 +222,8 @@ div:has(.voucher-pdp-modal-container) {
   font-size: clamp(16px, 2.4vw, 18px) !important;
   margin: 0 auto;
   width: fit-content;
+  line-height: 150%;
+  font-weight: 600;
 }
 
 .modal-date {
@@ -284,7 +257,7 @@ div:has(.voucher-pdp-modal-container) {
 }
 
 .brand-list a {
-  color: #445ac8;
+  color: #0088cc;
   text-decoration: none;
 }
 
@@ -329,8 +302,7 @@ div:has(.voucher-pdp-modal-container) {
 }
 
 .copy-code-modal > button {
-  /* background: var(--primary-color-blue-70, #185baa); */
-  background: #445ac8;
+  background: var(--primary-color-blue-70, #185baa);
   color: white;
   font-weight: 600;
   border-radius: 20px;
@@ -338,7 +310,6 @@ div:has(.voucher-pdp-modal-container) {
   height: 40px;
   margin-top: 12px;
   border: none;
-  cursor: pointer;
 }
 .copy-code-modal > button:hover {
   background: var(--primary-color-blue-70, #2f73c2);

@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Button + Accessible Modal</title>
+    <style>
+        :root {
+            --bg: #0b0c10;
+            --panel: #ffffff;
+            --overlay: rgba(0, 0, 0, .5);
+            --accent: #0066ff
+        }
+
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 32px;
+            background: linear-gradient(180deg, #f6f7fb, #eef1f8)
+        }
+
+        /* Button */
+        .btn {
+            appearance: none;
+            border: 0;
+            background: var(--accent);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer
+        }
+
+        .btn:focus {
+            outline: 3px solid color-mix(in srgb, var(--accent) 40%, transparent);
+            outline-offset: 3px
+        }
+
+        /* Dialog styling */
+        dialog {
+            border: 0;
+            border-radius: 12px;
+            padding: 0;
+            width: min(560px, calc(100% - 40px));
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
+        }
+
+        .dialog-panel {
+            background: var(--panel);
+            padding: 20px 22px
+        }
+
+        .dialog-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px
+        }
+
+        .dialog-header h2 {
+            font-size: 1.125rem;
+            margin: 0
+        }
+
+        .dialog-body {
+            color: #333;
+            font-size: 0.95rem;
+            line-height: 1.45;
+            margin-bottom: 18px
+        }
+
+        .dialog-footer {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end
+        }
+
+        /* Backdrop fallback for browsers without ::backdrop support */
+        dialog::backdrop {
+            background: var(--overlay)
+        }
+
+        /* Small utilities */
+        .close-btn {
+            background: transparent;
+            border: 0;
+            padding: 6px;
+            border-radius: 6px;
+            cursor: pointer
+        }
+
+        .close-btn:focus {
+            outline: 3px solid color-mix(in srgb, var(--accent) 40%, transparent)
+        }
+    </style>
+</head>
+
+<body>
+    <button class="btn" id="openModalBtn">Open modal</button>
+
+    <dialog id="myModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="dialog-panel">
+            <div class="dialog-header">
+                <h2 id="modalTitle">Sample Modal</h2>
+                <button class="close-btn" id="closeBtn" aria-label="Close modal">✕</button>
+            </div>
+            <div class="dialog-body">
+                <p>This is a simple, accessible modal built with native <code>&lt;dialog&gt;</code> and vanilla
+                    JavaScript. It traps focus, closes on escape, and closes when you click outside the panel (the
+                    backdrop).</p>
+            </div>
+            <div class="dialog-footer">
+                <button class="btn" id="confirmBtn">Confirm</button>
+                <button class="btn" id="cancelBtn">Cancel</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script>
+        (function () {
+            const openBtn = document.getElementById('openModalBtn');
+            const dialog = document.getElementById('myModal');
+            const closeBtn = document.getElementById('closeBtn');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+
+            let previouslyFocused;
+
+            function getFocusable(el) {
+                return el.querySelectorAll('a[href],button:not([disabled]),textarea,input,select,[tabindex]:not([tabindex="-1"])');
+            }
+
+            function openDialog() {
+                previouslyFocused = document.activeElement;
+                if (typeof dialog.showModal === 'function') {
+                    dialog.showModal();
+                } else {
+                    // fallback for older browsers: emulate modal
+                    dialog.setAttribute('open', '');
+                    document.body.style.overflow = 'hidden';
+                }
+                // Move focus into the dialog
+                const focusables = getFocusable(dialog);
+                if (focusables.length) focusables[0].focus();
+                document.addEventListener('focus', enforceFocus, true);
+            }
+
+            function closeDialog() {
+                if (typeof dialog.close === 'function') dialog.close();
+                dialog.removeAttribute('open');
+                document.body.style.overflow = '';
+                document.removeEventListener('focus', enforceFocus, true);
+                if (previouslyFocused) previouslyFocused.focus();
+            }
+
+            function enforceFocus(e) {
+                if (!dialog.contains(e.target)) {
+                    e.stopPropagation();
+                    const focusables = getFocusable(dialog);
+                    if (focusables.length) focusables[0].focus();
+                }
+            }
+
+            openBtn.addEventListener('click', openDialog);
+            closeBtn.addEventListener('click', closeDialog);
+            cancelBtn.addEventListener('click', closeDialog);
+            confirmBtn.addEventListener('click', function () {
+                // put confirm logic here
+                alert('Confirmed');
+                closeDialog();
+            });
+
+            // Close on backdrop click (only if clicking directly the dialog element)
+            dialog.addEventListener('click', function (e) {
+                if (e.target === dialog) closeDialog();
+            });
+
+            // Close on Escape key
+            dialog.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') closeDialog();
+                // trap Tab
+                if (e.key === 'Tab') {
+                    const focusables = Array.from(getFocusable(dialog));
+                    if (!focusables.length) return;
+                    const first = focusables[0];
+                    const last = focusables[focusables.length - 1];
+                    if (e.shiftKey && document.activeElement === first) {
+                        e.preventDefault(); last.focus();
+                    } else if (!e.shiftKey && document.activeElement === last) {
+                        e.preventDefault(); first.focus();
+                    }
+                }
+            });
+
+            // For non-supporting browsers, allow Escape via window
+            window.addEventListener('keydown', function (e) { if (e.key === 'Escape' && dialog.hasAttribute('open')) closeDialog(); });
+        })();
+    </script>
+</body>
+
+</html>

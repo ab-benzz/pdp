@@ -1,0 +1,152 @@
+<!-- Code for PDP section -->
+
+<section id="ai-summary-section">
+    <div class="ai-summary-header">
+        <h2 class="ai-summary-header-name">Summary by Benny AI</h2>
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <path
+                d="M4.91222 0.364412C4.72482 -0.121471 4.04536 -0.12147 3.85796 0.364412L2.96627 2.67636C2.90876 2.82546 2.79221 2.94339 2.64487 3.00158L0.360121 3.90389C-0.120043 4.09352 -0.12004 4.78107 0.360128 4.9707L2.64487 5.87301C2.79221 5.9312 2.90876 6.04914 2.96627 6.19824L3.85796 8.51019C4.04536 8.99607 4.72482 8.99607 4.91222 8.51019L5.80392 6.19824C5.86142 6.04914 5.97797 5.9312 6.12532 5.87301L8.41007 4.9707C8.89023 4.78107 8.89023 4.09352 8.41007 3.90389L6.12532 3.00158C5.97797 2.94339 5.86142 2.82546 5.80392 2.67636L4.91222 0.364412Z"
+                fill="#D2EDFF" />
+            <path
+                d="M11.565 8.03477C11.4236 7.6681 10.9108 7.6681 10.7694 8.03477L10.0964 9.77951C10.053 9.89203 9.96509 9.98103 9.85389 10.0249L8.12968 10.7059C7.76732 10.849 7.76732 11.3679 8.12968 11.511L9.85389 12.1919C9.96509 12.2358 10.053 12.3248 10.0964 12.4373L10.7694 14.1821C10.9108 14.5488 11.4236 14.5488 11.565 14.1821L12.2379 12.4373C12.2813 12.3248 12.3693 12.2358 12.4805 12.1919L14.2047 11.511C14.567 11.3679 14.567 10.849 14.2047 10.7059L12.4805 10.0249C12.3693 9.98103 12.2813 9.89203 12.2379 9.77951L11.565 8.03477Z"
+                fill="#019BF0" />
+        </svg>
+    </div>
+
+    <div class="ai-keywords-chips"></div>
+
+    <p class="ai-summary-description"></p>
+
+</section>
+
+
+<script>
+    const skuElement = document.querySelector(".productFullDetail-sku-23W span:nth-of-type(3)");
+    const targetSKU = skuElement ? skuElement.textContent.trim() : null;
+    //const targetSKU= 182282;
+    console.log(targetSKU);
+    fetch("https://ab-benzz.github.io/ui-ux-json/data/batch_1.json")
+        .then(response => response.json())
+        .then(data => {
+            // const product = data.find(item => item.SKU === targetSKU);
+            //const product = data.find(item => String(item.SKU) === String(targetSKU));
+            const product = data.find(
+                item => String(item.sku).toLowerCase() === String(targetSKU).toLowerCase()
+            );
+            if (product) {
+                // Populate chips
+                const chipsContainer = document.querySelector(".ai-keywords-chips");
+                chipsContainer.innerHTML = ""; // Clear existing
+                product.keywords.forEach(chip => {
+                    const chipDiv = document.createElement("div");
+                    chipDiv.classList.add("chip-item");
+                    chipDiv.textContent = chip;
+                    chipsContainer.appendChild(chipDiv);
+                });
+
+                // Populate description
+                const desc = document.querySelector(".ai-summary-description");
+                desc.textContent = product.summary;
+            } else {
+                console.error("SKU not found in JSON:", targetSKU);
+            }
+        })
+        .catch(error => console.error("Error fetching JSON:", error));
+</script>
+
+<style>
+    :root {
+        --ai-summary-header-gap: 4px;
+    }
+
+    #ai-summary-section {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        position: relative;
+        border-radius: 12px;
+        padding: 16px;
+    }
+
+    #ai-summary-section::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        padding: 1px;
+        border-radius: inherit;
+        background: linear-gradient(270deg, #92d8ff, #b3f2ff, #9abaff, #92d8ff);
+        background-size: 400% 400%;
+        animation: gradientMove 8s linear infinite alternate;
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+    }
+
+    .ai-summary-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .ai-summary-header>div:has(svg + .ai-summary-header-name) {
+        display: flex;
+        align-items: center;
+        gap: var(--ai-summary-header-gap);
+    }
+
+    .ai-summary-header-name {
+        color: #185baa;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 130%;
+        margin: unset;
+    }
+
+    .ai-keywords-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .chip-item {
+        color: var(--PrimaryTextColor-PrimaryText90, #4c525c);
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 114%;
+        /* 12.54px */
+        border-radius: 100px;
+        background: #f1f2f6;
+        padding: 4px 12px;
+    }
+
+    .ai-summary-description {
+        color: var(--PrimaryTextColor-PrimaryText90, #4c525c);
+        font-size: clamp(12px, 2vw, 14px);
+        /*font-size: 12px;*/
+        font-style: normal;
+        font-weight: 400;
+        line-height: 140%;
+        text-overflow: ellipsis;
+        margin: unset;
+    }
+
+    /*@media screen and (width > 768px) {
+  .ai-summary-header {
+    justify-content: unset;
+    gap: var(--ai-summary-header-gap);
+  }
+}*/
+
+    @keyframes gradientMove {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        100% {
+            background-position: 400% 50%;
+        }
+    }
+</style>
+
+<!-- Divider -->

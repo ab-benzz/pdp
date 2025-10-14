@@ -1,63 +1,77 @@
 :root {
 }
 
-#voucher-payments-pdp {
+#payment-promos-pdp {
   display: flex;
 }
 
-.voucher-pdp_container {
+.payment-pdp-container {
   display: flex;
   max-width: 850px;
   overflow: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  gap: 4px;
 }
 
 .voucher-pdp-container::-webkit-scrollbar-button {
   display: none;
 }
 
-.voucher-pdp_item {
+.payment-promos-pdp-item {
   display: flex;
-  border: 1px dashed #c1da70;
   gap: 8px;
   padding: 8px 8px 8px 12px;
   flex: 1;
-  min-width: 235px;
+  min-width: 230px;
+  border-radius: 5px;
+  border: 0.5px solid var(--Stroke, #dadce0);
+  box-shadow: 0 12px 3px 0 rgba(194, 194, 194, 0),
+    0 8px 3px 0 rgba(194, 194, 194, 0.01), 0 4px 3px 0 rgba(194, 194, 194, 0.04),
+    0 2px 2px 0 rgba(194, 194, 194, 0.07), 0 0 1px 0 rgba(194, 194, 194, 0.08),
+    0 0 0 0 rgba(194, 194, 194, 0.08);
+  background: transparent;
+  max-width: 235px;
+  cursor: pointer;
 }
 
-.voucher-pdp_item .voucher-pdp_info {
+.payment-promos-pdp-item .payment-info-pdp {
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: start;
+  min-width: 0;
 }
 
-.voucher-pdp_item > button {
+.payment-promos-pdp-item > button {
   border: unset;
   background-color: unset;
   cursor: pointer;
 }
 
-.voucher-pdp_item > button:first-of-type {
+.payment-promos-pdp-item > button:first-of-type {
   display: flex;
   gap: 8px;
 }
 
-.voucher-pdp_item .voucher-info-title {
+.payment-promos-pdp-item .payment-info-title {
   font-weight: 500;
-  line-height: 20px;
-  color: #383d45;
-  font-size: 14px;
   line-height: 142.857%;
+  color: #383d45;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 14px;
 }
-.voucher-pdp_item .voucher-pdp_info > small {
+
+.payment-promos-pdp-item .payment-info-subtitle {
   font-size: 12px;
   font-weight: 450;
   line-height: 114%;
   color: var(--SecondaryGray-SecondaryGray100, #4d4b4b);
   text-overflow: ellipsis;
-
+  white-space: nowrap;
+  overflow: hidden;
   /* font-family: "TT Firs Text Trial"; */
 }
 
@@ -65,7 +79,7 @@
   border-radius: 4px;
 }
 
-.voucher-pdp_item > button:last-of-type .voucher-pdp_copybtn {
+.voucher-pdp-item > button:last-of-type .voucher-pdp-copybtn {
   background: #ebf7c9;
   border-radius: 4px;
   width: 50px;
@@ -246,7 +260,7 @@ div:has(.voucher-pdp-modal-container) {
 /* Modals */
 
 .modal-title {
-  color: var(--Primary-Black, #282727);
+  color: var(--primary-color-blue-70, #185baa);
   font-weight: 700 !important;
   font-size: clamp(16px, 2.4vw, 18px) !important;
   margin: 0 auto;
@@ -284,7 +298,7 @@ div:has(.voucher-pdp-modal-container) {
 }
 
 .brand-list a {
-  color: #445ac8;
+  color: #0088cc;
   text-decoration: none;
 }
 
@@ -329,8 +343,7 @@ div:has(.voucher-pdp-modal-container) {
 }
 
 .copy-code-modal > button {
-  /* background: var(--primary-color-blue-70, #185baa); */
-  background: #445ac8;
+  background: var(--primary-color-blue-70, #185baa);
   color: white;
   font-weight: 600;
   border-radius: 20px;
@@ -338,7 +351,6 @@ div:has(.voucher-pdp-modal-container) {
   height: 40px;
   margin-top: 12px;
   border: none;
-  cursor: pointer;
 }
 .copy-code-modal > button:hover {
   background: var(--primary-color-blue-70, #2f73c2);

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Returns PDP</title>
+    <link rel="icon" type="image/x-icon" href="https://tinyurl.com/yt7f6mkc">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+    <main>
+        <section id="returns-and-warranty-pdp">
+            <div class="returns-pdp-modalcontainer"></div>
+        </section>
+    </main>
+</body>
+<!-- 
+    <script id="returns-data" type="application/json">
+    {
+    "id": "returns",
+    "title": "Return and Warranty",
+    "items": [
+        { "heading": "100% Authentic", "description": "All gadgets are guaranteed genuine." },
+        { "heading": "1 Year Warranty", "description": "All gadgets come with a 1-year warranty (unless stated otherwise)." },
+        { "heading": "Money Back Guarantee", "description": "If your item arrives damaged/defective or does not arrive at all, you are eligible for a return or exchange within 7 days of delivery." }
+    ]
+    }
+    </script> -->
+
+<script>
+    const returnsData = {
+        id: "returns",
+        title: "Return and Warranty",
+        items: [
+            { heading: "100% Authentic", description: "All gadgets are guaranteed genuine." },
+            { heading: "1 Year Warranty", description: "All gadgets come with a 1-year warranty (unless stated otherwise)." },
+            { heading: "Money Back Guarantee", description: "If your item arrives damaged/defective or does not arrive at all, you are eligible for a return or exchange within 7 days of delivery." }
+        ]
+    };
+
+    function renderReturnsButton() {
+        const buttonContainer = document.querySelector("#returns-and-warranty-pdp");
+
+        let buttonHTML = "<button id=\"returns-btn\" data-target=\"#modal-" + returnsData.id + "\">";
+        const filteredItems = (returnsData.items || []).filter(function (item) { return item.heading; });
+
+        for (let i = 0; i < filteredItems.length; i++) {
+            buttonHTML += "<span>" + filteredItems[i].heading + "</span>";
+            if (i < filteredItems.length - 1) {
+                buttonHTML += "<span class=\"returns-dot\">●</span>";
+            }
+        }
+
+        buttonHTML += "</button>";
+        buttonContainer.insertAdjacentHTML("afterbegin", buttonHTML);
+    }
+
+    function renderReturnsModal() {
+        const modalContainer = document.querySelector(".returns-pdp-modalcontainer");
+        let itemsHTML = "";
+
+        const filteredItems = (returnsData.items || []).filter(function (item) { return item.heading || item.description; });
+
+        for (let i = 0; i < filteredItems.length; i++) {
+            const item = filteredItems[i];
+            itemsHTML += "<div class=\"returns-modal-item\">";
+            itemsHTML += "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"19\" height=\"19\" viewBox=\"0 0 19 19\" fill=\"none\">";
+            itemsHTML += "<circle cx=\"9.5\" cy=\"9.5\" r=\"9.5\" fill=\"#EBF7C9\"/></svg>";
+            itemsHTML += "<div class=\"returs-modal-details\">";
+            if (item.heading) {
+                itemsHTML += "<strong class=\"returns-modal-heading\">" + item.heading + "</strong>";
+            }
+            if (item.description) {
+                itemsHTML += "<p class=\"returns-modal-desc\">" + item.description + "</p>";
+            }
+            itemsHTML += "</div></div>";
+        }
+
+        modalContainer.innerHTML =
+            "<dialog id=\"modal-" + returnsData.id + "\" class=\"modal hidden\">" +
+            "<div class=\"modal-content\">" +
+            "<span class=\"close-btn\">&times;</span>" +
+            (returnsData.title ? "<h2 class=\"modal-title\">" + returnsData.title + "</h2>" : "") +
+            itemsHTML +
+            "</div>" +
+            "</dialog>";
+
+        setupModalEvents();
+    }
+
+    function setupModalEvents() {
+        const button = document.querySelector("#returns-btn");
+        const modal = document.querySelector(button.dataset.target);
+        const content = modal.querySelector(".modal-content");
+
+        // Open modal
+        button.addEventListener("click", function () {
+            modal.classList.remove("hidden");
+            content.classList.add("slide-in");
+            document.body.style.overflow = "hidden";
+
+            content.addEventListener("animationend", function () {
+                content.classList.remove("slide-in");
+            }, { once: true });
+        });
+
+        // Close modal logic
+        const closeModal = function () {
+            const isMobile = window.matchMedia("(max-width: 767px)").matches;
+            content.classList.add("closing");
+            content.style.opacity = "0";
+
+            if (isMobile) {
+                content.style.transition = "transform 0.3s ease, opacity 0.3s ease";
+                content.style.transform = "translateY(100%)";
+            }
+
+            modal.classList.add("fading-out");
+
+            const handleClose = function () {
+                modal.classList.add("hidden");
+                modal.classList.remove("fading-out");
+                content.classList.remove("closing");
+                content.style.transition = "";
+                content.style.transform = "";
+                content.style.opacity = "";
+            };
+
+            content.addEventListener("animationend", handleClose, { once: true });
+            content.addEventListener("transitionend", handleClose, { once: true });
+        };
+
+        modal.querySelector(".close-btn").addEventListener("click", closeModal);
+        modal.addEventListener("click", function (e) { if (e.target === modal) closeModal(); });
+        document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !modal.classList.contains("hidden")) closeModal(); });
+
+        // Touch swipe logic
+        let startY = 0, currentY = 0, lastMoveY = 0, isSwiping = false, swipeStartedFromTop = false;
+
+        content.addEventListener("touchstart", function (e) {
+            startY = e.touches[0].clientY;
+            lastMoveY = startY;
+            isSwiping = true;
+            swipeStartedFromTop = content.scrollTop === 0;
+            content.style.transition = "";
+        });
+
+        content.addEventListener("touchmove", function (e) {
+            if (!isSwiping || !swipeStartedFromTop) return;
+            currentY = e.touches[0].clientY;
+            const deltaY = currentY - startY;
+            if (deltaY > 0) {
+                e.preventDefault();
+                lastMoveY = currentY;
+                const resistance = Math.min(deltaY, 300);
+                content.style.transform = "translateY(" + resistance + "px)";
+                content.style.opacity = Math.max(1 - resistance / 300, 0.7);
+                document.body.style.overflow = "hidden";
+            }
+        }, { passive: false });
+
+        content.addEventListener("touchend", function () {
+            const deltaY = currentY - startY;
+            const endDirection = currentY - lastMoveY;
+            isSwiping = false;
+            document.body.style.overflow = "";
+
+            if (swipeStartedFromTop && deltaY > 100 && endDirection >= 0) {
+                closeModal();
+            } else {
+                content.style.transition = "transform 0.2s ease, opacity 0.2s ease";
+                content.style.transform = "translateY(0) scale(1)";
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        renderReturnsButton();
+        renderReturnsModal();
+    });
+</script>
+
+
+<!-- 
+    <script>
+        const returnsData = {
+            id: "returns",
+            title: "Return and Warranty",
+            items: [
+                {
+                    heading: "100% Authentic",
+                    description: "All gadgets are guaranteed genuine."
+                },
+                {
+                    heading: "1 Year Warranty",
+                    description: "All gadgets come with a 1-year warranty (unless stated otherwise)."
+                },
+                {
+                    heading: "Money Back Guarantee",
+                    description: "If your item arrives damaged/defective or does not arrive at all, you are eligible for a return or exchange within 7 days of delivery."
+                }
+            ]
+        };
+
+        function renderReturnsButton() {
+            const buttonContainer = document.querySelector('#returns-and-warranty-pdp');
+
+            const buttonHTML = `
+            <button id="returns-btn" data-target="#modal-${returnsData.id}">
+                ${returnsData.items
+                    .filter(item => item.heading) // skip items without heading
+                    .map((item, index, arr) => `
+                        <span>${item.heading}</span>
+                        ${index < arr.length - 1 ? `<span class="returns-dot">●</span>` : ''}
+                    `).join('')}
+            </button>
+        `;
+
+            buttonContainer.insertAdjacentHTML('afterbegin', buttonHTML);
+        }
+
+        function renderReturnsModal() {
+            const modalContainer = document.querySelector(".returns-pdp-modalcontainer");
+
+            const itemsHTML = (returnsData.items || [])
+                .filter(item => item.heading || item.description) // skip blanks
+                .map(item => `
+                <div class="returns-modal-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none"><circle cx="9.5" cy="9.5" r="9.5" fill="#EBF7C9"/></svg>
+                    <div class="returs-modal-details">
+                        ${item.heading ? `<strong class="returns-modal-heading">${item.heading}</strong>` : ''}
+                        ${item.description ? `<p class="returns-modal-desc">${item.description}</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
+
+            modalContainer.innerHTML = `
+        <dialog id="modal-${returnsData.id}" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                ${returnsData.title ? `<h2 class="modal-title">${returnsData.title}</h2>` : ''}
+                ${itemsHTML}
+            </div>
+        </dialog>`;
+
+            setupModalEvents(); // reuse your modal logic
+        }
+
+
+        function setupModalEvents() {
+            const button = document.querySelector('#returns-btn');
+            const modal = document.querySelector(button.dataset.target);
+            const content = modal.querySelector('.modal-content');
+
+            // Open modal
+            button.addEventListener('click', () => {
+                modal.classList.remove('hidden');
+                content.classList.add('slide-in');
+                document.body.style.overflow = 'hidden';
+
+                content.addEventListener('animationend', () => {
+                    content.classList.remove('slide-in');
+                }, { once: true });
+            });
+
+            // Close modal logic
+            const closeModal = () => {
+                const isMobile = window.matchMedia('(max-width: 767px)').matches;
+
+                content.classList.add('closing');
+                content.style.opacity = '0';
+
+                if (isMobile) {
+                    content.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+                    content.style.transform = 'translateY(100%)';
+                }
+
+                modal.classList.add('fading-out');
+
+                const handleClose = () => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('fading-out');
+                    content.classList.remove('closing');
+                    content.style.transition = '';
+                    content.style.transform = '';
+                    content.style.opacity = '';
+                };
+
+                content.addEventListener('animationend', handleClose, { once: true });
+                content.addEventListener('transitionend', handleClose, { once: true });
+            };
+
+            // Close button
+            modal.querySelector('.close-btn').addEventListener('click', closeModal);
+
+            // Click outside modal
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+
+            // Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+
+            // Touch swipe to close (mobile)
+            let startY = 0, currentY = 0, lastMoveY = 0, isSwiping = false, swipeStartedFromTop = false;
+
+            content.addEventListener('touchstart', e => {
+                startY = e.touches[0].clientY;
+                lastMoveY = startY;
+                isSwiping = true;
+                swipeStartedFromTop = content.scrollTop === 0;
+                content.style.transition = '';
+            });
+
+            content.addEventListener('touchmove', e => {
+                if (!isSwiping || !swipeStartedFromTop) return;
+
+                currentY = e.touches[0].clientY;
+                const deltaY = currentY - startY;
+
+                if (deltaY > 0) {
+                    e.preventDefault();
+                    lastMoveY = currentY;
+                    const resistance = Math.min(deltaY, 300);
+                    content.style.transform = `translateY(${resistance}px)`;
+                    content.style.opacity = Math.max(1 - resistance / 300, 0.7);
+                    document.body.style.overflow = 'hidden';
+                }
+            }, { passive: false });
+
+            content.addEventListener('touchend', () => {
+                const deltaY = currentY - startY;
+                const endDirection = currentY - lastMoveY;
+
+                isSwiping = false;
+                document.body.style.overflow = '';
+
+                if (swipeStartedFromTop && deltaY > 100 && endDirection >= 0) {
+                    closeModal();
+                } else {
+                    content.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
+                    content.style.transform = 'translateY(0) scale(1)';
+                    content.style.opacity = '1';
+                    content.addEventListener('transitionend', () => {
+                        content.style.transition = '';
+                    }, { once: true });
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            renderReturnsButton();
+            renderReturnsModal();
+        });
+    </script> -->
+
+</html>
+
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+        align-items: center;
+        font-family: "Poppins", serif;
+        color: #4c525c;
+    }
+
+    body,
+    main {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    main {
+        width: 100%;
+        display: flex;
+        /* align-items: center; */
+        max-width: 1400px;
+
+    }
+
+    h1 {
+        color: #006de2;
+        font-weight: 600;
+        font-size: clamp(1.2rem, 2.8vw, 1.5rem);
+        line-height: clamp(1.8rem, 4vw, 2.2rem);
+    }
+
+
+
+    #hero {
+        width: 100%;
+        position: relative;
+        background-color: #ecf5ff;
+        padding: clamp(3rem, 5vw, 5rem) clamp(1rem, 5vw, 5rem);
+        max-width: 1400px;
+        border-bottom-left-radius: 1.25rem;
+        border-bottom-right-radius: 1.25rem;
+    }
+
+
+    a {
+        text-decoration: none;
+    }
+
+
+    @media only screen and (width > 768px) {}
+
+    @media only screen and (width > 968px) {}
+
+    @media screen and (width > 1400px) {
+        body {
+            background-color: unset;
+        }
+
+        #hero {
+            margin-top: 2rem;
+            border-radius: 1.25rem;
+        }
+    }
+</style>

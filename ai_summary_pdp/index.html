@@ -68,7 +68,7 @@
     document.addEventListener("DOMContentLoaded", () => {
         const targetSKU = "182282"; // Change this to the SKU you want to display
 
-        fetch("https://ab-benzz.github.io/ui-ux-json/data/ai_pdp_summary.json")
+        fetch("https://abenson-uxui.github.io/ui-ux-json/data/batch_1.json")
             .then(response => response.json())
             .then(data => {
                 const product = data.find(item => String(item.SKU) === String(targetSKU));

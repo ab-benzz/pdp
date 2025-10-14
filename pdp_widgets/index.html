@@ -1,0 +1,424 @@
+<!-- JS - Scripts for Appliance Sale August 2025 -->
+
+<script type="text/simi-script">
+(function() {
+const allowedSKUs = [
+"188739",
+"191548",
+"168691",
+"174348",
+"175608",
+"176163",
+"176164",
+"182387",
+"184248",
+"184091",
+"186053",
+"186370",
+"186365",
+"185565",
+"184059",
+"184060",
+"185843",
+"188524",
+"188349",
+"188397",
+"188350",
+"185758",
+"189433",
+"189349",
+"189256",
+"189284",
+"180544",
+"189659",
+"189347",
+"189894",
+"189895",
+"189896",
+"190235",
+"190217",
+"190280",
+"190860",
+"190861",
+"190863",
+"190615",
+"190969",
+"190963",
+"190652",
+"190638",
+"190622",
+"190756",
+"191095",
+"190759",
+"190697",
+"191672",
+"190654",
+"191557",
+"191671",
+"190699",
+"191406",
+"192624",
+"192320",
+"192321",
+"192322",
+"192323",
+"192368",
+"193098",
+"192370",
+"192369",
+"193174",
+"192642",
+"193177",
+"193502",
+"193178",
+"194125",
+"193986",
+"193628",
+"194031",
+"194032",
+"194033",
+"191644",
+"193604",
+"193540",
+"193539",
+"193173",
+"192863",
+"191927",
+"194453",
+"194454",
+"194001",
+"194088",
+"194571",
+"194572",
+"194869",
+"194870",
+"194857",
+"194858",
+"194743",
+"195349",
+"195061",
+"195507",
+"195879",
+"195127",
+"195298",
+"195848",
+"195849",
+"195850",
+"195853",
+"195854",
+"194667",
+"196068",
+"196627",
+"196628",
+"196336",
+"196653",
+"196652",
+"196659",
+"196660",
+"196665",
+"196671",
+"196738",
+"195936",
+"196838",
+"196558",
+"196559",
+"196560",
+"196625",
+"195992",
+"196563",
+"196684",
+"196685",
+"196509",
+"196510",
+"196673",
+"196643",
+"196646",
+"195939",
+"195942",
+"196856",
+"196975",
+"196980",
+"196981",
+"196985",
+"196986",
+"196987",
+"196974",
+"196989",
+"196990",
+"196994",
+"196995",
+"196983",
+"196984",
+"197061",
+"197043",
+"196939",
+"197140",
+"197255",
+"197256",
+"197138",
+"197358",
+"197266",
+"195113",
+"194121",
+"193146",
+"197645",
+"197467",
+"197468",
+"197469",
+"197470",
+"197471",
+"197472",
+"197558",
+"196626",
+"197491",
+"197492",
+"193012",
+"197899",
+"197900",
+"197901",
+"197902",
+"198094",
+"197998",
+"196494",
+"197953",
+"197518",
+"198364",
+"198365",
+"197163",
+"198480",
+"198085",
+"198073",
+"196319",
+"198023",
+"198743",
+"198566",
+"198807",
+"199208",
+"199003",
+"199004",
+"198961",
+"199293",
+"199724",
+"199725",
+"199726",
+"199727",
+"199722",
+]; // Replace with product SKUs
+
+
+  let skuMatched = false;
+  let scrollSetup = false;
+  let preorderSetup = false;
+  let badgeSetup = false;
+
+  function runMainLogic() {
+    // 1. Setup scroll on #special-offers click
+    if (!scrollSetup) {
+      const trigger = document.querySelector("#special-offers");
+      const target = document.querySelector("#customOption");
+      if (trigger && target) {
+        trigger.style.cursor = "pointer";
+        trigger.addEventListener("click", () => {
+          const offset = window.innerWidth <= 1024 ? 80 : 200;
+          const targetTop = target.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top: targetTop, behavior: "smooth" });
+        });
+        scrollSetup = true;
+      }
+    }
+
+    // 2. Change preorder title text
+    if (!preorderSetup) {
+      const isAddToCart = document.querySelector("#add-to-cart-btn") || document.querySelector(".productFullDetail-wishlistButtonRoot-3pB");
+      const preOrderTitle = document.querySelector("#preodertitle");
+      if (isAddToCart && preOrderTitle) {
+        preOrderTitle.textContent = "ENDS IN:";
+        preorderSetup = true;
+      }
+    }
+
+    // 3. Add limited-time badge class
+    if (!badgeSetup) {
+      const el = document.querySelector(".option-title");
+      if (el) {
+        el.classList.add("limited-time-badge");
+        badgeSetup = true;
+      }
+    }
+
+
+  // 4. Add balloon-enabled class to circle background 
+  const circleBgEl = document.querySelector(".preOrderCountdown-circleBg-1lj");
+  if (circleBgEl) {
+    circleBgEl.classList.add("balloon-enabled");
+  }
+
+
+    // If all setups done, disconnect observer
+    if (scrollSetup && preorderSetup && badgeSetup) {
+      observer.disconnect();
+      console.log("All setups done, observer disconnected.");
+    }
+  }
+
+  function checkSKU() {
+    const skuContainer = document.querySelector(".productFullDetail-sku-23W span:last-child");
+    if (skuContainer) {
+      const currentSKU = skuContainer.textContent.trim();
+      if (allowedSKUs.includes(currentSKU)) {
+        if (!skuMatched) {
+          console.log("Matched SKU:", currentSKU);
+          skuMatched = true;
+          runMainLogic();
+        }
+        return true;
+      } else {
+        console.log("Not a target SKU:", currentSKU);
+        observer.disconnect(); // Stop observing since SKU not matched
+        return false;
+      }
+    }
+    return false;
+  }
+
+  const observer = new MutationObserver(() => {
+    if (!skuMatched) {
+      if (checkSKU()) {
+        runMainLogic();
+      }
+    } else {
+      // SKU matched, try to run main logic in case some elements not ready yet
+      runMainLogic();
+    }
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  
+// Initial check in case elements are already loaded
+ if (checkSKU()) {
+  runMainLogic();
+} 
+
+  // --- Rerun when URL changes
+  let lastURL = location.href;
+
+  setInterval(() => {
+    if (location.href !== lastURL) {
+      lastURL = location.href;
+
+      // Reset flags so logic runs again cleanly
+      skuMatched = false;
+      scrollSetup = false;
+      preorderSetup = false;
+      badgeSetup = false;
+
+      // Re-activate observer for the new page
+      observer.observe(document.body, { childList: true, subtree: true });
+
+      // Re-check SKU on new PDP
+      if (checkSKU()) {
+        runMainLogic();
+      }
+    }
+  }, 500);
+
+
+})();
+</script>
+
+
+<!-- CSS for Bday Sale July 2025 -->
+<style>
+    /* Limited Time offer chip CSS Styles */
+    .limited-time-badge::after {
+        content: " Limited time offer";
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 8px;
+        margin-left: 8px;
+        border-radius: 20px;
+        background: #FFF4D9;
+        color: #FFB400;
+        white-space: nowrap;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 130%;
+        background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2217%22%20height%3D%2217%22%20viewBox%3D%220%200%2017%2017%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5.37866%207.53687C5.66713%206.78947%206.67197%206.74288%207.04956%207.39722L7.11597%207.53687L7.78491%209.27319L9.50073%209.9519C10.2885%2010.2632%2010.2886%2011.3839%209.50073%2011.6951L7.78491%2012.3728L7.11597%2014.1091C6.80845%2014.9065%205.68618%2014.9065%205.37866%2014.1091L4.70874%2012.3728L2.9939%2011.6951C2.2062%2011.3838%202.20626%2010.2632%202.9939%209.9519L4.70874%209.27319L5.37866%207.53687Z%22%20fill%3D%22%23FFE5A7%22%20stroke%3D%22%23FFB400%22%20stroke-miterlimit%3D%2216%22%2F%3E%3Cpath%20d%3D%22M9.93819%202.88971C9.83885%202.63214%209.47867%202.63214%209.37933%202.88971L8.90664%204.11526C8.87616%204.1943%208.81437%204.25682%208.73627%204.28767L7.52513%204.76598C7.27059%204.8665%207.2706%205.23097%207.52513%205.33149L8.73627%205.8098C8.81437%205.84065%208.87616%205.90317%208.90664%205.98221L9.37933%207.20777C9.47867%207.46533%209.83885%207.46533%209.93819%207.20777L10.4109%205.98221C10.4414%205.90317%2010.5031%205.84065%2010.5812%205.8098L11.7924%205.33149C12.0469%205.23097%2012.0469%204.8665%2011.7924%204.76598L10.5812%204.28767C10.5031%204.25682%2010.4414%204.1943%2010.4109%204.11526L9.93819%202.88971Z%22%20fill%3D%22%23FFB400%22%2F%3E%3Cpath%20d%3D%22M12.796%207.278C12.71%207.05512%2012.3983%207.05512%2012.3124%207.278L11.9034%208.33849C11.877%208.40688%2011.8235%208.46098%2011.7559%208.48767L10.7079%208.90157C10.4877%208.98855%2010.4877%209.30393%2010.7079%209.39091L11.7559%209.8048C11.8235%209.8315%2011.877%209.8856%2011.9034%209.95399L12.3124%2011.0145C12.3983%2011.2374%2012.71%2011.2374%2012.796%2011.0145L13.205%209.95399C13.2314%209.8856%2013.2848%209.8315%2013.3524%209.8048L14.4004%209.39091C14.6207%209.30393%2014.6207%208.98855%2014.4004%208.90156L13.3524%208.48767C13.2848%208.46098%2013.2314%208.40688%2013.205%208.33849L12.796%207.278Z%22%20fill%3D%22%23FFB400%22%2F%3E%3C%2Fsvg%3E");
+        background-repeat: no-repeat;
+        background-size: 20px;
+        background-position: 8px center;
+        padding-left: 29px;
+        /* space for icon */
+    }
+
+    .option-title-label {
+        line-height: 130%
+    }
+
+
+
+
+    /* Balloon for PDP timer */
+    /*.preOrderCountdown-circleBg-1lj.balloon-enabled::after {
+  content: "";
+  position: absolute;
+  bottom: 25%;
+  left: 0;   
+  width: 300px;
+  height: 300px;
+  background-image: url('https://d1rlzxa98cyc61.cloudfront.net/wysiwyg/pages/birthday_page/bday_balloon_pdp.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+  z-index: 2;
+}*/
+
+
+    .preOrderCountdown-timerInnerContainer-3hr::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 69px;
+        background-image: url(https://d1rlzxa98cyc61.cloudfront.net/wysiwyg/pdp/sale_timer_confetti.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+
+    .preOrderCountdown-timerInnerContainer-3hr::before {
+        content: "";
+        position: absolute;
+        width: 350px;
+        height: 173px;
+        background-image: url(https://d1rlzxa98cyc61.cloudfront.net/wysiwyg/pdp/sale_timer_banderitas4.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        pointer-events: none;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -2%);
+    }
+
+    .preOrderCountdown-timerTextHolder-Jdb {
+        position: relative;
+        z-index: 2;
+    }
+
+    @media screen and (width >=767px) {
+        .preOrderCountdown-timerInnerContainer-3hr::before {
+            top: 0;
+            right: 0;
+            left: unset;
+            transform: unset;
+        }
+    }
+</style>
