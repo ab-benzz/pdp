@@ -305,7 +305,6 @@
 
                     const resistance = Math.min(deltaY, 300);
                     content.style.transform = `translateY(${resistance}px)`;
-                    // content.style.transform = `translateY(${resistance}px) scale(${Math.max(1 - resistance / 1000, 0.95)})`;
                     content.style.opacity = Math.max(1 - resistance / 300, 0.7);
                     document.body.style.overflow = 'hidden';
                 }
@@ -375,7 +374,6 @@
     main {
         width: 100%;
         display: flex;
-        /* align-items: center; */
         max-width: 1400px;
 
     }
